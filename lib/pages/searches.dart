@@ -1,32 +1,32 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/models/show_category.dart';
+import 'package:news_app/models/search_model.dart';
 import 'package:news_app/pages/article_view.dart';
-import 'package:news_app/services/show_category_news.dart';
+import 'package:news_app/services/search_data.dart';
 
-class CategoryNews extends StatefulWidget {
-  String name;
-  CategoryNews({required this.name});
+class SearchNews extends StatefulWidget {
+  final String searchQuery; 
+  const SearchNews({required this.searchQuery});
 
   @override
-  State<CategoryNews> createState() => _CategoryNewsState();
+  State<SearchNews> createState() => _SearchNewsState();
 }
 
-class _CategoryNewsState extends State<CategoryNews> {
-  List<ShowCategoryModel> categories=[];
+class _SearchNewsState extends State<SearchNews> {
+  List<SearchModel> searches=[];
+  
   bool _loading=true;
 
   @override
   void initState() {
     super.initState();
-    getNews();
+    getNews(widget.searchQuery);
   }  
 
-  // Get all the category news
-  getNews() async{
-    ShowCategoryNews showCategoryNews=ShowCategoryNews();
-    await showCategoryNews.getCategoriesNews(widget.name.toLowerCase());
-    categories=showCategoryNews.categories;
+  void getNews(String searchQuery) async{
+    showSearchNews searchNews=showSearchNews();
+    await searchNews.getSearchNews(searchQuery.toLowerCase());
+    searches=searchNews.searches;
     setState(() {
       _loading=false; 
     });
@@ -37,24 +37,30 @@ class _CategoryNewsState extends State<CategoryNews> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.name,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold),
+          widget.searchQuery,
+          style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0.0,
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.0),
-        child: ListView.builder(
+        child: searches.isEmpty? Center(
+          child: Text(
+            "No Search results found",
+            style: TextStyle(fontSize: 20),
+          ),
+        ) :
+        ListView.builder(
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),
-          itemCount: categories.length,
+          itemCount: searches.length,
           itemBuilder: (context, index){
-            return ShowCategory(
-              image: categories[index].urlToImage!,
-              desc: categories[index].description!, 
-              title: categories[index].title!,
-              url: categories[index].url!,
+            return ShowSearch(
+              image: searches[index].urlToImage!,
+              desc: searches[index].description!, 
+              title: searches[index].title!,
+              url: searches[index].url!,
             );
           },
         ),
@@ -63,9 +69,9 @@ class _CategoryNewsState extends State<CategoryNews> {
   }
 }
 
-class ShowCategory extends StatelessWidget {
+class ShowSearch extends StatelessWidget {
   String image, desc, title, url;
-  ShowCategory({required this.image, required this.title, required this.desc, required this.url});
+  ShowSearch({required this.image, required this.title, required this.desc, required this.url});
 
   @override
   Widget build(BuildContext context) {

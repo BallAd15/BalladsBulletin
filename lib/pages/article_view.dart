@@ -17,10 +17,10 @@ class _ArticleViewState extends State<ArticleView> {
         title: Row( 
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Flutter"),
+            Text("Ballad's"),
             Text(
-              "News",
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+              "Bulletin",
+              style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold),
             ),
           ],
         ),

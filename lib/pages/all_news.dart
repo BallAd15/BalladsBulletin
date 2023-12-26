@@ -47,7 +47,7 @@ class _AllNewsState extends State<AllNews> {
       appBar: AppBar(
         title: Text(
           widget.news + " News",
-          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0.0,

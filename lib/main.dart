@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/pages/home.dart';
 import 'package:news_app/pages/landing_page.dart';
+import 'package:news_app/theme/dark_theme.dart';
+import 'package:news_app/theme/light_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,11 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'NewsApp',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: LandingPage()
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      //theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple), useMaterial3: true,),
+      home: const LandingPage()
     );
   }
 }
